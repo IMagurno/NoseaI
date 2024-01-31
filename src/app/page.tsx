@@ -1,21 +1,24 @@
-import "./globals.css";
+import { Prediction } from "@/types";
+
+// import "./globals.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Prediction } from "@/types";
-import { resolve } from "path";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function Home() {
+  const apiKey = "r8_5XznJn49zWNWoldsrT47RnA4TPHDkxl29KYyS";
+
   async function createPrediction(formData: FormData) {
     "use server";
 
-    let prediction = await fetch("https://replicate.com/api/predictions/", {
+    let prediction = await fetch("https://replicate.com/api/predictions", {
       headers: {
         accept: "application/json",
         "accept-language": "en-US,en;q=0.5",
         "content-type": "application/json",
+        Authorization: `Token ${apiKey}`,
         "sec-ch-ua":
           '"Not A Brand";v="99", "Brave";v="121", "Chromium";v="121"',
         "sec-ch-ua-mobile": "?0",
@@ -57,11 +60,12 @@ export default function Home() {
 
     while (["starting", "processing"].includes(prediction.status)) {
       prediction = await fetch(
-        "https://replicate.com/api/predictions" + prediction.id,
+        `https://replicate.com/api/predictions/${prediction.id}`,
         {
           headers: {
             accept: "*/*",
             "accept-language": "en-US,en;q=0.6",
+            Authorization: `Token ${apiKey}`,
             "sec-ch-ua":
               '"Not A(Brand";v="99", "Brave";v="121", "Chromium";v="121"',
             "sec-ch-ua-mobile": "?0",
