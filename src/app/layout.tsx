@@ -23,15 +23,17 @@ export default async function RootLayout ({
     <html lang='en'>
       <body>
         <header>
-          <nav className='nav container'>
-            <h1 className='text-display-3'>KindeAuth</h1>
+          <nav className='flex h-[60px] justify-between items-center border-b border-white px-[51px]'>
+            <h1 className='font-bold  text-2xl'>NoseAI</h1>
             <div>
               {!(await isAuthenticated()) ? (
                 <>
-                  <LoginLink className='btn btn-ghost sign-in-btn'>
-                    Sign in
-                  </LoginLink>
-                  <RegisterLink className='btn btn-dark'>Sign up</RegisterLink>
+                  <div className="flex gap-5">
+                    <LoginLink className='hover:underline'>Sign in</LoginLink>
+                    <RegisterLink className='hover:underline'>
+                      Sign up
+                    </RegisterLink>
+                  </div>
                 </>
               ) : (
                 <div className='profile-blob'>
