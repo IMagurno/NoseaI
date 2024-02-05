@@ -24,7 +24,9 @@ export default async function RootLayout({
       <body>
         <header>
           <nav className="flex h-[60px] justify-between items-center border-b border-white px-[51px]">
-            <h1 className="font-bold  text-2xl">NoseAI</h1>
+            <a href="/" className="font-bold  text-2xl">
+              NoseAI
+            </a>
             <div>
               {!(await isAuthenticated()) ? (
                 <>

@@ -2,7 +2,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 
 import { Prediction } from "@/types";
-import { addSyntheticLeadingComment } from "typescript";
 
 
 export async function createPrediction (
@@ -43,9 +42,9 @@ export async function createPrediction (
         image: imageUrl,
         scale: 9,
         prompt: formData.get("prompt") as string,
-        a_prompt: "best quality, extremely detailed",
+        a_prompt: "best quality, extremely detailed, octane, good beds, windows, light, bloom, aesthetic, clean",
         n_prompt:
-          "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+          "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, stay the structure, big changes, bad chairs, bad beds",
         ddim_steps: 20,
         num_samples: "1",
         value_threshold: 0.1,
