@@ -2,16 +2,26 @@
 import { unstable_noStore as noStore } from "next/cache";
 
 import { Prediction } from "@/types";
+import { addSyntheticLeadingComment } from "typescript";
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function createPrediction (
-  _state: null | Prediction,
   formData: FormData
 ): Promise<Prediction | null> {
   noStore();
 
-  let prediction = await fetch("https://replicate.com/api/predictions", {
+  const imageUrl = await fetch(
+      `https://api.cloudinary.com/v1_1/dztpbeymi/image/upload?upload_preset=NoseAI-Replicate`,
+      {
+        method: "PUT",
+        body: formData.get('image') as File,
+      },
+    )
+      .then((res) => res.json() as Promise<{secure_url: string}>)
+      .then(({secure_url}) => secure_url)
+
+
+  const prediction = await fetch("https://replicate.com/api/predictions", {
     headers: {
       accept: "application/json",
       "accept-language": "en-US,en;q=0.5",
@@ -30,7 +40,7 @@ export async function createPrediction (
     body: JSON.stringify({
       input: {
         eta: 0,
-        image: formData.get("image") as string,
+        image: imageUrl,
         scale: 9,
         prompt: formData.get("prompt") as string,
         a_prompt: "best quality, extremely detailed",
@@ -54,9 +64,16 @@ export async function createPrediction (
     credentials: "include",
   }).then(res => res.json() as Promise<Prediction>);
 
-  while (["starting", "processing"].includes(prediction.status)) {
-    prediction = await fetch(
-      `https://replicate.com/api/predictions/${prediction.id}`,
+  return prediction;
+
+}
+
+
+export async function getPrediction(id:string) {
+  noStore();
+
+  return fetch(
+      "https://replicate.com/api/predictions/" + id,
       {
         headers: {
           accept: "*/*",
@@ -77,10 +94,7 @@ export async function createPrediction (
         mode: "cors",
         credentials: "include",
       }
-    ).then(res => res.json() as Promise<Prediction>);
-
-    console.log(prediction);
-  }
-
-  return prediction;
+      
+    ).then(res => res.json() as Promise<Prediction>)
+  
 }
