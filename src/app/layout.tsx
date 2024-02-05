@@ -12,7 +12,7 @@ export const metadata = {
   description: "Kinde with NextJS App Router",
 };
 
-export default async function RootLayout ({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -20,42 +20,44 @@ export default async function RootLayout ({
   const { isAuthenticated, getUser } = getKindeServerSession();
   const user = await getUser();
   return (
-    <html lang='en'>
+    <html lang="en">
       <body>
         <header>
-          <nav className='flex h-[60px] justify-between items-center border-b border-white px-[51px]'>
-            <h1 className='font-bold  text-2xl'>NoseAI</h1>
+          <nav className="flex h-[60px] justify-between items-center border-b border-white px-[51px]">
+            <h1 className="font-bold  text-2xl">NoseAI</h1>
             <div>
               {!(await isAuthenticated()) ? (
                 <>
                   <div className="flex gap-5">
-                    <LoginLink className='hover:underline'>Sign in</LoginLink>
-                    <RegisterLink className='hover:underline'>
+                    <LoginLink className="hover:underline">Sign in</LoginLink>
+                    <RegisterLink className="hover:underline">
                       Sign up
                     </RegisterLink>
                   </div>
                 </>
               ) : (
-                <div className='profile-blob'>
+                <div className="flex">
                   {user?.picture ? (
                     <img
-                      className='avatar'
+                      className="h-[45px] w-auto rounded-full mx-3"
                       src={user?.picture}
-                      alt='user profile avatar'
-                      referrerPolicy='no-referrer'
+                      alt="user profile avatar"
+                      referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <div className='avatar'>
+                    <div className="avatar">
                       {user?.given_name?.[0]}
                       {user?.family_name?.[0]}
                     </div>
                   )}
                   <div>
-                    <p className='text-heading-2'>
+                    <p className="uppercase font-bold">
                       {user?.given_name} {user?.family_name}
                     </p>
 
-                    <LogoutLink className='text-subtle'>Log out</LogoutLink>
+                    <LogoutLink className="text-gray-400 hover:text-white">
+                      Log out
+                    </LogoutLink>
                   </div>
                 </div>
               )}
@@ -63,17 +65,17 @@ export default async function RootLayout ({
           </nav>
         </header>
         <main>{children}</main>
-        <footer className='footer'>
-          <div className='container'>
-            <strong className='text-heading-2'>KindeAuth</strong>
-            <p className='footer-tagline text-body-3'>
+        <footer className="footer">
+          <div className="container">
+            <strong className="text-heading-2">KindeAuth</strong>
+            <p className="footer-tagline text-body-3">
               Visit our{" "}
-              <Link className='link' href='https://kinde.com/docs'>
+              <Link className="link" href="https://kinde.com/docs">
                 help center
               </Link>
             </p>
 
-            <small className='font-bold text-red-500'>
+            <small className="font-bold text-red-500">
               © 2023 , Inc. All rights reserved
             </small>
           </div>

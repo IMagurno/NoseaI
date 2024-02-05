@@ -1,59 +1,68 @@
 "use client";
-
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Prediction } from "@/types";
 import { createPrediction, getPrediction } from "@/actions";
-import { useFormState, useFormStatus } from "react-dom";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-function FormContent() {
-  const { pending } = useFormStatus();
-
-  return (
-    <>
-      {pending ? <Skeleton className="h-[480px] w-[512px]" /> : null}
-      <Input
-        defaultValue="https://replicate.delivery/pbxt/IJZOELWrncBcjdE1s5Ko8ou35ZOxjNxDqMf0BhoRUAtv76u4/room.png"
-        name="image"
-        placeholder="https://replicate.delivery/pbxt/IJZOELWrncBcjdE1s5Ko8ou35ZOxjNxDqMf0BhoRUAtv76u4/room.png"
-        type="file"
-        className="border border-black"
-      />
-      <Textarea
-        placeholder="An industrial bedroom"
-        name="prompt"
-        className="border border-black"
-      />
-      <Button disabled={pending}>Crear</Button>
-    </>
-  );
-}
-
 export default function HomePage() {
-  const [state, formAction] = useFormState(handleSubmit, null);
-  async function handleSubmit(_state: Prediction, formData: FormData) {
+  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState({
+    isLoading: false,
+    result: null as null | string,
+  });
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setState({ isLoading: true, result: null });
+
+    const formData = new FormData(event.currentTarget);
+
     let prediction = await createPrediction(formData);
+
+    if (!prediction) {
+      setError(
+        "No se pudo obtener una predicción. Por favor, inténtalo de nuevo."
+      );
+      return;
+    }
 
     while (["starting", "processing"].includes(prediction.status)) {
       prediction = await getPrediction(prediction.id);
-
       await sleep(4000);
     }
-
-    return prediction;
+    setError(null);
+    setState({ result: prediction.output[1], isLoading: false });
   }
 
   return (
-    <section className="gap-3 grid w-[512px] m-auto">
-      <form action={formAction} className="gap-3 grid">
-        {state?.output && (
-          <img alt="pre renderizado de la imagen" src={state.output[1]} />
+    <section className="flex justify-center items-center ">
+      <form
+        className="flex flex-col justify-center items-center gap-4 w-[512px] py-[60px]"
+        onSubmit={handleSubmit}
+      >
+        {state.result && (
+          <img
+            alt="Previsualización del render"
+            src={state.result}
+            defaultValue="https://replicate.delivery/pbxt/IJZOELWrncBcjdE1s5Ko8ou35ZOxjNxDqMf0BhoRUAtv76u4/room.png"
+          />
         )}
-        <FormContent />
+        <Input
+          defaultValue="https://replicate.delivery/pbxt/IJZOELWrncBcjdE1s5Ko8ou35ZOxjNxDqMf0BhoRUAtv76u4/room.png"
+          name="image"
+          placeholder="https://replicate.delivery/pbxt/IJZOELWrncBcjdE1s5Ko8ou35ZOxjNxDqMf0BhoRUAtv76u4/room.png"
+          type="file"
+          className="cursor-pointer"
+        />
+        <Textarea name="prompt" placeholder="An industrial bedroom" />
+        <Button
+          className="border w-[160px] hover:bg-white hover:text-black"
+          disabled={state.isLoading}
+        >
+          Crear
+        </Button>
       </form>
     </section>
   );
