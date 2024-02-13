@@ -26,13 +26,14 @@ export default function HomePage() {
       setError(
         "No se pudo obtener una predicción. Por favor, inténtalo de nuevo."
       );
-      setState({ ...state, isLoading: false }); // Asegúrate de detener la carga si hay un error
+      setState({ ...state, isLoading: false });
       return;
     }
 
     while (["starting", "processing"].includes(prediction.status)) {
-      await sleep(4000); // Esperar antes de volver a solicitar el estado de la predicción
+      await sleep(4000);
       prediction = await getPrediction(prediction.id);
+      console.log(prediction);
     }
 
     setError(null);
@@ -46,10 +47,8 @@ export default function HomePage() {
         onSubmit={handleSubmit}
       >
         {state.isLoading ? (
-          // Muestra un texto de carga si está cargando
           <p className="text-center text-lg">Cargando...</p>
         ) : state.result ? (
-          // Muestra la imagen si la carga ha terminado y el resultado está disponible
           <img alt="Previsualización del render" src={state.result} />
         ) : null}
         <Input name="image" type="file" className="cursor-pointer" />
