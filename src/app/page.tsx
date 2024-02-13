@@ -84,19 +84,28 @@ export default function LandingPage() {
             </h1>
             <p className="text-gray-400">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam,
-              fuga velit porro architecto accusamus molestias deserunt alias
-              quas exercitationem vel in veniam. Eius, cupiditate sunt?
-              Perferendis consequatur necessitatibus beatae iste?
+              fuga velit{" "}
+              <span className="font-bold text-white"> porro architecto</span>{" "}
+              accusamus molestias deserunt alias quas exercitationem vel in
+              veniam. Eius, cupiditate sunt? Perferendis consequatur
+              necessitatibus beatae iste?
             </p>
           </div>
           <div>
-            <Button className="border w-[180px] hover:bg-white hover:text-black">
-              Redesing your room now!
-            </Button>
+            <a
+              href="/rooms"
+              className="relative inline-flex items-center justify-start  px-5 py-3 overflow-hidden font-bold group"
+            >
+              <span className="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+              <span className="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+                Start now!
+              </span>
+              <span className="absolute inset-0 border-2 border-white"></span>
+            </a>
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center w-screen h-screen -z-10">
+      <div className=" flex items-center justify-center w-screen h-screen -z-10">
         <div className={styles.spacer}></div>
         <div ref={gallery} className={styles.gallery}>
           <Column images={[images[0], images[1], images[2]]} y={y} />
@@ -108,10 +117,12 @@ export default function LandingPage() {
       </div>
       <div
         id="jebus"
-        className="h-[712px] -mt-[312px] w-screen bg-[#1c1b22] flex justify-center items-center flex-col gap-10"
+        className="h-[912px] -mt-[512px] w-screen bg-[#1c1b22] flex justify-center items-center flex-col gap-10"
       >
-        <div>
-          <h1 className="text-6xl">hola</h1>
+        <div className="flex items-center justify-center">
+          <h3 className="text-3xl align-text-center font-bold">
+            Take a photo and redesign your interior in seconds using AI
+          </h3>
         </div>
         <div className="flex flex-row justify-items-center items-center gap-10 rounded-xl">
           <img
@@ -119,18 +130,75 @@ export default function LandingPage() {
             src="room.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
-          <h1 className="text-7xl">→</h1>
+          <h3 className="text-7xl">→</h3>
           <img
             className="h-[512px] w-auto"
             src="output_0.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
-          <h1 className="text-7xl">→</h1>
+          <h3 className="text-7xl">→</h3>
           <img
             className="h-[512px] w-auto"
             src="output_1-1.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
+        </div>
+      </div>
+      <div className="flex justify-center items-center w-screen h-[712px] ">
+        <div className="flex justify-center items-center  w-screen h-[912px]">
+          <div className="relative border border-black shadow-xl shadow-gray-600 group">
+            <span className="absolute inset-0 w-full h-full transform translate-x-3 translate-y-3 bg-black"></span>
+            <span className="absolute inset-0 w-full h-full bg-gray-200 border-2 border-black"></span>
+            <div className="flex flex-row">
+              <div className="relative h-[612px] w-[712px]">
+                <div className="relative flex flex-col m-24 h-full gap-6">
+                  <h3 className="text-4xl text-black font-extrabold">
+                    Redesign your interior now
+                  </h3>
+                  <p className="text-gray-700">
+                    Save money and use AI to redesign your interior from your
+                    laptop or phone instead of hiring an expensive interior
+                    designer
+                  </p>
+                  <p className="text-gray-500">
+                    🤳 Take a photo of your current interior and let AI redesign
+                    it in seconds{" "}
+                  </p>
+                  <p className="text-gray-500">
+                    🎨 Choose an interior style from Modern, Minimalist to
+                    Contemporary
+                  </p>
+                  <p className="text-gray-500">
+                    ⚡️ Transform your sketches and SketchUp files into
+                    photorealistic renders
+                  </p>
+                  <p className="text-gray-500">
+                    ⚡️ Transform your sketches and SketchUp files into
+                    photorealistic renders
+                  </p>
+                  <div>
+                    <a
+                      href="/rooms"
+                      className="relative inline-flex items-center justify-start w-[130px] px-5 py-3 overflow-hidden font-bold group"
+                    >
+                      <span className="absolute top-0 left-0 w-32 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-white opacity-100 group-hover:-translate-x-8"></span>
+                      <span className="relative w-full text-left text-black transition-colors duration-200 ease-in-out group-hover:text-gray-900">
+                        Start now!
+                      </span>
+                      <span className="absolute inset-0 border-2 border-white"></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="relative h-[612px] w-[412px]">
+                <img
+                  src="output_1-1.png"
+                  alt=""
+                  className="w-[412px] h-[612px]"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

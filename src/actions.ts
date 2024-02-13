@@ -42,9 +42,9 @@ export async function createPrediction (
         image: imageUrl,
         scale: 9,
         prompt: formData.get("prompt") as string,
-        a_prompt: "best quality, extremely detailed, octane, good beds, windows, light, bloom, aesthetic, clean",
+        a_prompt: "best quality, extremely detailed, octane, light, bloom",
         n_prompt:
-          "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, stay the structure, big changes, bad chairs, bad beds",
+          "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
         ddim_steps: 20,
         num_samples: "1",
         value_threshold: 0.1,
