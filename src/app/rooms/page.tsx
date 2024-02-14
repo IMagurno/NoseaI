@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createPrediction, getPrediction } from "@/actions";
+import { useDropzone } from "react-dropzone";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -14,11 +15,20 @@ export default function HomePage() {
     result: null as null | string,
   });
 
+  const onDrop = useCallback((acceptedFiles: any) => {
+    console.log(acceptedFiles);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({
+      onDrop,
+    });
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState({ isLoading: true, result: null });
 
     const formData = new FormData(event.currentTarget);
+    formData.append("file", acceptedFiles[0]);
 
     let prediction = await createPrediction(formData);
 
@@ -41,17 +51,35 @@ export default function HomePage() {
   }
 
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center h-[100vh]">
       <form
         className="flex flex-col justify-center items-center gap-4 w-[512px] py-[60px]"
         onSubmit={handleSubmit}
       >
         {state.isLoading ? (
           <p className="text-center text-lg">Cargando...</p>
-        ) : state.result ? (
+        ) : // <Skeleton />
+        state.result ? (
           <img alt="Previsualización del render" src={state.result} />
         ) : null}
-        <Input name="image" type="file" className="cursor-pointer" />
+        <div {...getRootProps()}>
+          <Input
+            name="image"
+            type="file"
+            className="cursor-pointer"
+            {...getInputProps()}
+          />
+          {isDragActive ? (
+            <p>Drop the files here ...</p>
+          ) : (
+            <p>Drag 'n' drop some files here, or click to select files</p>
+          )}
+        </div>
+
+        {acceptedFiles[0] && (
+          <img src={URL.createObjectURL(acceptedFiles[0])} />
+        )}
+
         <Textarea name="prompt" placeholder="An industrial bedroom" />
         <Button
           className="border w-[160px] hover:bg-white hover:text-black"
