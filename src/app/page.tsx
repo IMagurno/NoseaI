@@ -70,7 +70,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="h-content flex flex-col gap-3 max-w-[512px]">
+    <main className="h-content flex flex-col gap-3 overflow-hidden">
       <div id="hello" className="bg-gray-950 w-screen h-[700px] relative">
         <img
           className="opacity-20 w-full h-full object-cover object-center "
@@ -79,7 +79,7 @@ export default function LandingPage() {
         />
         <div className="gap-32 flex flex-row items-center justify-center absolute bottom-1/4 left-1 transform -translate-y-1/2 bg-opacity-50 px-4 py-2 w-screen">
           <div className="w-[512px] flex flex-col gap-3">
-            <h1 className="text-5xl text-white font-bold text-pretty">
+            <h1 className="text-5xl text-white font-bold text-pretty ">
               Redesign your interior in seconds using AI
             </h1>
             <p className="text-gray-400">

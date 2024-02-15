@@ -14,10 +14,17 @@ export default function HomePage() {
     isLoading: false,
     result: null as null | string,
   });
+  const [fileDisplayed, setFileDisplayed] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: any) => {
+      console.log(acceptedFiles);
+      setFileDisplayed(true); // Marcar que hay un archivo para mostrar
+      setState({ ...state, result: null }); // Restablecer el resultado para no mostrar la imagen anterior mientras se carga la nueva
+    },
+    [state]
+  );
+
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
     useDropzone({
       onDrop,
@@ -25,29 +32,40 @@ export default function HomePage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setState({ isLoading: true, result: null });
-
-    const formData = new FormData(event.currentTarget);
-    formData.append("file", acceptedFiles[0]);
-
-    let prediction = await createPrediction(formData);
-
-    if (!prediction) {
-      setError(
-        "No se pudo obtener una predicción. Por favor, inténtalo de nuevo."
-      );
-      setState({ ...state, isLoading: false });
+    if (acceptedFiles.length === 0) {
+      setError("Por favor, selecciona un archivo antes de enviar.");
       return;
     }
 
-    while (["starting", "processing"].includes(prediction.status)) {
-      await sleep(4000);
-      prediction = await getPrediction(prediction.id);
-      console.log(prediction);
-    }
+    setState({ isLoading: true, result: null });
+    const formData = new FormData();
+    formData.append("image", acceptedFiles[0]);
+    formData.append("prompt", event.currentTarget.prompt.value);
 
-    setError(null);
-    setState({ result: prediction.output[1], isLoading: false });
+    try {
+      let prediction = await createPrediction(formData);
+
+      if (!prediction) {
+        setError(
+          "No se pudo obtener una predicción. Por favor, inténtalo de nuevo."
+        );
+        setState((prevState) => ({ ...prevState, isLoading: false }));
+        return;
+      }
+
+      while (["starting", "processing"].includes(prediction.status)) {
+        await sleep(4000);
+        prediction = await getPrediction(prediction.id);
+      }
+
+      setError(null);
+      setState({ result: prediction.output[1], isLoading: false });
+      setFileDisplayed(false);
+    } catch (error) {
+      console.error(error);
+      setError("Se produjo un error al procesar tu solicitud.");
+      setState((prevState) => ({ ...prevState, isLoading: false }));
+    }
   }
 
   return (
@@ -56,28 +74,43 @@ export default function HomePage() {
         className="flex flex-col justify-center items-center gap-4 w-[512px] py-[60px]"
         onSubmit={handleSubmit}
       >
-        {state.isLoading ? (
-          <p className="text-center text-lg">Cargando...</p>
-        ) : // <Skeleton />
-        state.result ? (
+        {state.isLoading && <p className="text-center text-lg">Cargando...</p>}
+        {state.result && (
           <img alt="Previsualización del render" src={state.result} />
-        ) : null}
-        <div {...getRootProps()}>
-          <Input
-            name="image"
-            type="file"
-            className="cursor-pointer"
-            {...getInputProps()}
-          />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <p>Drag 'n' drop some files here, or click to select files</p>
-          )}
-        </div>
+        )}
 
-        {acceptedFiles[0] && (
-          <img src={URL.createObjectURL(acceptedFiles[0])} />
+        {!state.isLoading && !state.result && (
+          <div
+            className={`w-[512px] h-[512px] border border-dashed flex items-center justify-center ${
+              fileDisplayed ? "hidden" : ""
+            }`}
+            {...getRootProps()}
+          >
+            <Input
+              name="image"
+              type="file"
+              className="cursor-pointer"
+              {...getInputProps()}
+            />
+            {isDragActive ? (
+              <p>Suelta los archivos aquí ...</p>
+            ) : (
+              <p>
+                Arrastra y suelta algunos archivos aquí, o haz clic para
+                seleccionar archivos
+              </p>
+            )}
+          </div>
+        )}
+
+        {fileDisplayed && acceptedFiles[0] && !state.result && (
+          <img
+            className={`${
+              state.isLoading ? "animate-pulse" : "w-[512px] h-[512px]"
+            }`}
+            src={URL.createObjectURL(acceptedFiles[0])}
+            alt="Vista previa del archivo seleccionado"
+          />
         )}
 
         <Textarea name="prompt" placeholder="An industrial bedroom" />
