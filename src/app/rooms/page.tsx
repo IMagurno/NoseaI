@@ -69,19 +69,22 @@ export default function HomePage() {
   }
 
   return (
-    <section className="flex justify-center items-center h-[100vh]">
+    <section className="flex justify-center items-center h-screen">
       <form
-        className="flex flex-col justify-center items-center gap-4 w-[512px] py-[60px]"
+        className="flex flex-col justify-center items-center gap-4 w-full px-4 py-12 sm:w-[512px] sm:px-0"
         onSubmit={handleSubmit}
       >
-        {state.isLoading && <p className="text-center text-lg">Cargando...</p>}
         {state.result && (
-          <img alt="Previsualización del render" src={state.result} />
+          <img
+            alt="Previsualización del render"
+            src={state.result}
+            className="max-w-full h-auto"
+          />
         )}
 
         {!state.isLoading && !state.result && (
           <div
-            className={`w-[512px] h-[512px] border border-dashed flex items-center justify-center ${
+            className={`w-full sm:w-[512px] h-[512px] border border-dashed flex items-center justify-center cursor-pointer text-center p-10 text-gray-500 ${
               fileDisplayed ? "hidden" : ""
             }`}
             {...getRootProps()}
@@ -105,17 +108,21 @@ export default function HomePage() {
 
         {fileDisplayed && acceptedFiles[0] && !state.result && (
           <img
-            className={`${
-              state.isLoading ? "animate-pulse" : "w-[512px] h-[512px]"
+            className={`max-w-full h-auto ${
+              state.isLoading ? "animate-pulse" : ""
             }`}
             src={URL.createObjectURL(acceptedFiles[0])}
             alt="Vista previa del archivo seleccionado"
           />
         )}
 
-        <Textarea name="prompt" placeholder="An industrial bedroom" />
+        <Textarea
+          className="w-full sm:w-[512px] p-2"
+          name="prompt"
+          placeholder="An industrial bedroom"
+        />
         <Button
-          className="border w-[160px] hover:bg-white hover:text-black"
+          className="border w-full sm:w-[160px] hover:bg-white hover:text-black mt-4"
           disabled={state.isLoading}
         >
           Crear
