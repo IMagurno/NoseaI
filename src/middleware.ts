@@ -8,5 +8,5 @@ export default function middleware(req: Request) {
 }
 
 export const config = {
-  matcher: ["/rooms", "/homepage"],
+  matcher: [], // VOLVER A ANADIR EL /rooms DESPUES DE SOLUCIONAR EL DEPLOY EN VERCEL
 };
