@@ -28,12 +28,12 @@ export default async function RootLayout({
             </a>
             <div className="flex items-center justify-between">
               <div className="hidden md:flex gap-3 px-4">
-                <a href="#" className="font-semibold hover:underline">
+                {/* <a href="#" className="font-semibold hover:underline">
                   Gallery
                 </a>
                 <a href="#" className="font-semibold hover:underline">
                   Pricing
-                </a>
+                </a> */}
               </div>
               {!(await isAuthenticated()) ? (
                 <div className="flex gap-3 items-center">

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createPrediction, getPrediction } from "@/actions";
 import { useDropzone } from "react-dropzone";
-import { sleep } from "./page";
+import sleep from "./sleep";
 
 export default function HomePage() {
   const [error, setError] = useState<string | null>(null);

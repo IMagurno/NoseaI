@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createPrediction, getPrediction } from "@/actions";
 import { useDropzone } from "react-dropzone";
-
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import sleep from "./sleep";
 
 export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
@@ -18,9 +17,8 @@ export default function HomePage() {
 
   const onDrop = useCallback(
     (acceptedFiles: any) => {
-      console.log(acceptedFiles);
-      setFileDisplayed(true); // Marcar que hay un archivo para mostrar
-      setState({ ...state, result: null }); // Restablecer el resultado para no mostrar la imagen anterior mientras se carga la nueva
+      setFileDisplayed(true);
+      setState({ ...state, result: null });
     },
     [state]
   );

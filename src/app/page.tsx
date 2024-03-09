@@ -34,12 +34,12 @@ export default function LandingPage() {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, height * 3.3]);
   const y3 = useTransform(scrollYProgress, [0, 1], [0, height * 1.25]);
   const y4 = useTransform(scrollYProgress, [0, 1], [0, height * 3]);
-  const Column = ({ images, y }) => {
+  const Column = ({ images, y }: { images: string[]; y: any }) => {
     return (
       <motion.div className={styles.column} style={{ y }}>
-        {images.map((src: string, i: string | null | undefined) => {
+        {images.map((src: string, i: number) => {
           return (
-            <div key={i} className={styles.imageContainer}>
+            <div key={i.toString()} className={styles.imageContainer}>
               <Image src={`/images/${src}`} alt="image" fill />
             </div>
           );
@@ -177,7 +177,7 @@ export default function LandingPage() {
                     photorealistic renders
                   </p>
                   <div>
-                    <a
+                    {/* <a
                       href="/rooms"
                       className="relative inline-flex items-center justify-start w-[130px] px-5 py-3 overflow-hidden font-bold group"
                     >
@@ -186,7 +186,10 @@ export default function LandingPage() {
                         Start now!
                       </span>
                       <span className="absolute inset-0 border-2 border-white"></span>
-                    </a>
+                    </a> */}
+                    <Button className="border bg-black border-white text-white hover:text-black hover:bg-white hover:border-black ">
+                      Start now!
+                    </Button>
                   </div>
                 </div>
               </div>
