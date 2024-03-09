@@ -72,9 +72,11 @@ export default function LandingPage() {
   return (
     <main className="h-content flex flex-col gap-3 overflow-hidden">
       <div id="hello" className="bg-gray-950 w-screen h-[700px] relative">
-        <img
+        <Image
+          width="512"
+          height="512"
           className="opacity-20 w-full h-full object-cover object-center "
-          src="hero/test-bedroom-homepage.jpg"
+          src="/hero/test-bedroom-homepage.jpg"
           alt="header bedroom genereted with AI for a homepage"
         />
         <div className="gap-32 flex flex-row items-center justify-center absolute bottom-1/4 left-1 transform -translate-y-1/2 bg-opacity-50 px-4 py-2 w-screen">
@@ -125,21 +127,27 @@ export default function LandingPage() {
           </h3>
         </div>
         <div className="flex flex-row justify-items-center items-center gap-10 rounded-xl">
-          <img
+          <Image
+            width="1080"
+            height="512"
             className="h-[512px] w-auto"
-            src="room.png"
+            src="/room.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
           <h3 className="text-7xl">→</h3>
-          <img
+          <Image
+            width="1080"
+            height="512"
             className="h-[512px] w-auto"
-            src="output_0.png"
+            src="/output_0.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
           <h3 className="text-7xl">→</h3>
-          <img
+          <Image
+            width="1080"
+            height="512"
             className="h-[512px] w-auto"
-            src="output_1-1.png"
+            src="/output_1-1.png"
             alt="ACA TEDNIRA Q HABER UNA IMG"
           />
         </div>
@@ -194,8 +202,10 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="relative h-[612px] w-[412px]">
-                <img
-                  src="output_1-1.png"
+                <Image
+                  width="1080"
+                  height="1080"
+                  src="/output_1-1.png"
                   alt=""
                   className="w-[412px] h-[612px]"
                 />
